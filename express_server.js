@@ -4,17 +4,9 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const PORT = 8080;
 
-const users = require('./models/user_data');
+const { users } = require('./models/user_data');
+const { urlDatabase } = require('./models/url_data');
 
-
-
-/*
-TODO: 
--Store data in external folder => convention?
-db folder
--Store helper functions in external folder => convention?
-lib/utils
-*/
 
 
 app.set("view engine", "ejs");
@@ -30,11 +22,6 @@ function generateRandomString() {
   return str;
 };
 
-// Separate this to its own file when refactoring**
-const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
 
 // Helper Funcs
 // Separate this to a helperfunc file when refactoring**
