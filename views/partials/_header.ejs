@@ -14,8 +14,8 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <% if (user) { %>
         <form class="form-inline ml-auto" action="/logout" method="POST">
-          <label>Welcome <%= user.email %></label>
-          <button class="btn btn-outline-dark mx-2">Logout</button>
+          <label class="text-light">Logged in as: <%= user.email %></label>
+          <button class="btn btn-outline-light mx-2">Logout</button>
         </form>
       <% } else { %>
         <div class="navbar-nav ml-auto">
