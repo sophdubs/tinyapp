@@ -26,10 +26,10 @@
         <% for(let url in urls) { %>
           <tr>
             <!-- BUG!! Sometimes (only sometimes???) when I click edit, it acts as I clicked delete. -->
+            <td><%= url %></td>
+            <td><%= urls[url].longURL %></td>
+            <td><button class="btn btn-outline-primary"><a href="/urls/<%=url%>">Edit</a></button></td>
             <form method="POST" action="/urls/<%=url%>/delete">
-              <td><%= url %></td>
-              <td><%= urls[url].longURL %></td>
-              <td><button class="btn btn-outline-primary"><a href="/urls/<%=url%>">Edit</a></button></td>
               <td><button class="btn btn-outline-danger">Delete</button></td>
             </form>
           </tr>
