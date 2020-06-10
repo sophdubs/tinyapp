@@ -32,8 +32,8 @@ app.get('/', (req, res) => {
 app.get('/urls', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
   let userID = req.cookies['user_id'];
-  let user = users[userID]
-  let templateVars = { 
+  let user = users[userID];
+  let templateVars = {
     urls: urlDatabase,
     user
   };
@@ -55,9 +55,9 @@ app.get('/urls/new', (req, res) => {
 app.get('/urls/:shortURL', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
   let userID = req.cookies['user_id'];
-  let user = users[userID]
-  let templateVars = { 
-    shortURL: req.params.shortURL, 
+  let user = users[userID];
+  let templateVars = {
+    shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL],
     user
   };
@@ -67,7 +67,7 @@ app.get('/urls/:shortURL', (req, res) => {
 // Redirects the user to the longURL associated to the given shortURL
 app.get('/u/:shortURL', (req, res) => {
   res.redirect(urlDatabase[req.params.shortURL]);
-})
+});
 
 // Displays the urlDatabase in javascript object notation (JSON)
 app.get('/urls.json', (req, res) => {
@@ -76,7 +76,7 @@ app.get('/urls.json', (req, res) => {
 
 // Renders the html directly on the page
 app.get('/hello', (req, res) => {
-  res.send('<html><body>Hello <b>World</b></body></html>\n')
+  res.send('<html><body>Hello <b>World</b></body></html>\n');
 });
 
 // Form for user to register as a new user
@@ -154,7 +154,7 @@ app.post('/login', (req, res) => {
   // if user exists but password does not match, return response with 4-3 status code
   if (userObj.password !== password) {
     res.status(403).send('Password is incorrect');
-  } 
+  }
 
   // User exists and password is a match, set cookie to maintain logged in state
   res.cookie('user_id', userObj.id);
@@ -168,7 +168,7 @@ app.post('/logout', (req, res) => {
   res.clearCookie('user_id');
   
   res.redirect('/urls');
-})
+});
 
 // Starts server on given port
 app.listen(PORT, () => {
