@@ -90,6 +90,11 @@ app.get('/register', (req, res) => {
   res.render("register", templateVars);
 });
 
+app.get('/login', (req, res) => {
+  const templateVars = {user: null};
+  res.render("login", templateVars);
+});
+
 app.post('/urls', (req, res) => {
   let randomString = generateRandomString();
   urlDatabase[randomString] = req.body.longURL;
