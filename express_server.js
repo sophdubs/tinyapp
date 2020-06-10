@@ -7,42 +7,13 @@ const PORT = 8080;
 const { users } = require('./models/user_data');
 const { urlDatabase } = require('./models/url_data');
 
+const { addUserToDB, generateRandomString, userExists, findUserByEmail } = require('./helpers/helpers');
+
 
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
-
-function generateRandomString() {
-  const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let str = '';
-  while (str.length !== 6) {
-    str += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return str;
-};
-
-
-// Helper Funcs
-// Separate this to a helperfunc file when refactoring**
-const addUserToDB = function(email, password, userID) {
-  users[userID] = {
-    id: userID,
-    email,
-    password
-  };
-};
-
-const userExists = email => {
-  return (Object.values(users).find(user => user.email === email) !== undefined);
-};
-
-const findUserByEmail = email => {
-  const user = Object.values(users).find(user => user.email === email);
-  return user;
-};
-
-// end of helper funcs 
 
 app.get('/', (req, res) => {
   res.send('Hello!');
