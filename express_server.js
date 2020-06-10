@@ -14,6 +14,7 @@ const PORT = 8080;
 // Initializing app
 const app = express();
 
+
 // Setting configs and applying middleware
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
