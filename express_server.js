@@ -29,7 +29,7 @@ const users = {
   WpcvfS: { id: 'WpcvfS', email: 'test@gmail.com', password: 'lol' }
 };
 
-// Helper Func
+// Helper Funcs
 // Separate this to a helperfunc file when refactoring**
 const addUserToDB = function(email, password, userID) {
   users[userID] = {
@@ -38,6 +38,17 @@ const addUserToDB = function(email, password, userID) {
     password
   };
 };
+
+const userExists = email => {
+  return (Object.values(users).find(user => user.email === email) !== undefined);
+};
+
+const findUserByEmail = email => {
+  const user = Object.values(users).find(user => user.email === email);
+  return user;
+};
+
+// end of helper funcs 
 
 app.get('/', (req, res) => {
   res.send('Hello!');
@@ -98,13 +109,9 @@ app.get('/login', (req, res) => {
 app.post('/urls', (req, res) => {
   let randomString = generateRandomString();
   urlDatabase[randomString] = req.body.longURL;
-  console.log(urlDatabase);
   res.redirect(`/urls/${randomString}`);
 });
 
-const userExists = email => {
-  return (Object.values(users).find(user => user.email === email) !== undefined);
-}
 
 app.post('/register', (req, res) => {
   const {email, password} = req.body;
@@ -122,7 +129,6 @@ app.post('/register', (req, res) => {
   const userID = generateRandomString();
   addUserToDB(email, password, userID);
   res.cookie('user_id', userID);
-  console.log(users);
   res.redirect('/urls');
 });
 
@@ -137,9 +143,26 @@ app.post('/urls/:shortURL', (req, res) => {
   res.redirect('/urls');
 });
 
-// Going to need to change this, no longer using username
+
 app.post('/login', (req, res) => {
-  res.cookie('username', req.body.username);
+  // extract information from request
+  const {email, password} = req.body;
+
+  // find user in users DB by email (if no user is found, user will be undefined)
+  const userObj = findUserByEmail(email);
+
+  // if no user with that email, return response with 403 status code
+  if (!userObj) {
+    res.status(403).send('That email is not registered');
+  }
+
+  // if user exists but password does not match, return response with 4-3 status code
+  if (userObj.password !== password) {
+    res.status(403).send('Password is incorrect');
+  } 
+
+  // User exists and password is a match
+  res.cookie('user_id', userObj.id);
   res.redirect('/urls');
 });
 
