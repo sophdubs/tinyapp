@@ -65,7 +65,7 @@ app.get('/urls/:shortURL', (req, res) => {
   let user = users[userID];
   let templateVars = {
     shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL],
+    longURL: urlDatabase[req.params.shortURL].longURL,
     user
   };
   res.render("urls_show", templateVars);
@@ -73,7 +73,7 @@ app.get('/urls/:shortURL', (req, res) => {
 
 // Redirects the user to the longURL associated to the given shortURL
 app.get('/u/:shortURL', (req, res) => {
-  res.redirect(urlDatabase[req.params.shortURL]);
+  res.redirect(urlDatabase[req.params.shortURL].longURL);
 });
 
 // Displays the urlDatabase in javascript object notation (JSON)
@@ -104,7 +104,11 @@ app.get('/login', (req, res) => {
 // Creating a new shortURL/longURL entry in the database and redirect to /urls
 app.post('/urls', (req, res) => {
   let randomString = generateRandomString();
-  urlDatabase[randomString] = req.body.longURL;
+  let currUser = req.cookies['user_id'];
+  urlDatabase[randomString] = {
+    longURL: req.body.longURL,
+    userID: currUser
+  };
   res.redirect(`/urls/${randomString}`);
 });
 
@@ -143,7 +147,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 // Edit urlDatabase to update the value of the longURL
 app.post('/urls/:shortURL', (req, res) => {
   let newLongURL = req.body.new_long_URL;
-  urlDatabase[req.params.shortURL] = newLongURL;
+  urlDatabase[req.params.shortURL].longURL = newLongURL;
   res.redirect('/urls');
 });
 
