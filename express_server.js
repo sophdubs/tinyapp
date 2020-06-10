@@ -32,25 +32,31 @@ app.get('/', (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
+  let userID = req.cookies['user_id'];
+  let user = users[userID]
   let templateVars = { 
     urls: urlDatabase,
-    username: req.cookies['username']
+    user
   };
   res.render("urls_index", templateVars);
 });
 
 app.get('/urls/new', (req, res) => {
+  let userID = req.cookies['user_id'];
+  let user = users[userID];
   let templateVars = {
-    username: req.cookies['username']
+    user
   };
   res.render("urls_new", templateVars);
 });
 
 app.get('/urls/:shortURL', (req, res) => {
+  let userID = req.cookies['user_id'];
+  let user = users[userID]
   let templateVars = { 
     shortURL: req.params.shortURL, 
     longURL: urlDatabase[req.params.shortURL],
-    username: req.cookies['username']
+    user
   };
   res.render("urls_show", templateVars);
 });
@@ -68,7 +74,7 @@ app.get('/hello', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  const templateVars = {username: null};
+  const templateVars = {user: null};
   res.render("register", templateVars);
 });
 
@@ -79,6 +85,7 @@ app.post('/urls', (req, res) => {
   res.redirect(`/urls/${randomString}`);
 });
 
+// Maybe use helper func to add user to db
 app.post('/register', (req, res) => {
   const {email, password} = req.body;
   const userID = generateRandomString();
@@ -105,13 +112,14 @@ app.post('/urls/:shortURL', (req, res) => {
   res.redirect('/urls');
 });
 
+// Going to need to change this, no longer using username
 app.post('/login', (req, res) => {
   res.cookie('username', req.body.username);
   res.redirect('/urls');
 });
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('username');
+  res.clearCookie('user_id');
   res.redirect('/urls');
 })
 
