@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const PORT = 8080;
 
+const users = require('./models/user_data');
+
 
 
 /*
@@ -32,12 +34,6 @@ function generateRandomString() {
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
-};
-
-// Users database
-// Separate this to its own file when refactoring**
-const users = {
-  WpcvfS: { id: 'WpcvfS', email: 'test@gmail.com', password: 'lol' }
 };
 
 // Helper Funcs
