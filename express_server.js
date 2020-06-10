@@ -28,6 +28,12 @@ app.get('/', (req, res) => {
   res.send('Hello!');
 });
 
+
+// const urlsForUser = id => {
+
+// };
+
+
 // Displays a list of all shortURL and their associated longURL from the urlDatabase
 app.get('/urls', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
