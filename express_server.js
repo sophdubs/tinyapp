@@ -25,7 +25,19 @@ const urlDatabase = {
 
 // Users database
 // Separate this to its own file when refactoring**
-const users = {};
+const users = {
+  WpcvfS: { id: 'WpcvfS', email: 'test@gmail.com', password: 'lol' }
+};
+
+// Helper Func
+// Separate this to a helperfunc file when refactoring**
+const addUserToDB = function(email, password, userID) {
+  users[userID] = {
+    id: userID,
+    email,
+    password
+  };
+};
 
 app.get('/', (req, res) => {
   res.send('Hello!');
@@ -85,19 +97,27 @@ app.post('/urls', (req, res) => {
   res.redirect(`/urls/${randomString}`);
 });
 
-// Maybe use helper func to add user to db
+const userExists = email => {
+  return (Object.values(users).find(user => user.email === email) !== undefined);
+}
+
 app.post('/register', (req, res) => {
   const {email, password} = req.body;
+
+  // If email or password is empty string, send back response with 400 status code
+  if (!email || !password) {
+    res.status(400).send('Error: email and/or password field empty.');
+  }
+
+  // If user tries to register with an email already in the users DB, sent back response with 400 status code
+  if (userExists(email)) {
+    res.status(400).send('Error: email is already registered.');
+  }
+
   const userID = generateRandomString();
-
+  addUserToDB(email, password, userID);
   res.cookie('user_id', userID);
-  
-  users[userID] = {
-    id: userID,
-    email,
-    password
-  };
-
+  console.log(users);
   res.redirect('/urls');
 });
 
