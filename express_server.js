@@ -44,6 +44,13 @@ app.get('/urls', (req, res) => {
 app.get('/urls/new', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
   let userID = req.cookies['user_id'];
+
+  // If user is not logged in, they cannot create new urls are are redirected to login page
+  if (!userID) {
+    res.redirect('/login');
+    return;
+  }
+
   let user = users[userID];
   let templateVars = {
     user
@@ -108,11 +115,13 @@ app.post('/register', (req, res) => {
   // If email or password is empty string, send back response with 400 status code
   if (!email || !password) {
     res.status(400).send('Error: email and/or password field empty.');
+    return;
   }
 
   // If user tries to register with an email already in the users DB, sent back response with 400 status code
   if (userExists(email)) {
     res.status(400).send('Error: email is already registered.');
+    return;
   }
 
   // Generate UID and store new user in the db
@@ -149,11 +158,13 @@ app.post('/login', (req, res) => {
   // if no user with that email, return response with 403 status code
   if (!userObj) {
     res.status(403).send('That email is not registered');
+    return;
   }
 
   // if user exists but password does not match, return response with 4-3 status code
   if (userObj.password !== password) {
     res.status(403).send('Password is incorrect');
+    return;
   }
 
   // User exists and password is a match, set cookie to maintain logged in state
