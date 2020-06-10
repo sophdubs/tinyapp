@@ -25,6 +25,7 @@
       <tbody>
         <% for(let url in urls) { %>
           <tr>
+            <!-- BUG!! Sometimes (only sometimes???) when I click edit, it acts as I clicked delete. -->
             <form method="POST" action="/urls/<%=url%>/delete">
               <td><%= url %></td>
               <td><%= urls[url].longURL %></td>
