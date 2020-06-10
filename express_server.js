@@ -17,10 +17,15 @@ function generateRandomString() {
   return str;
 };
 
+// Separate this to its own file when refactoring**
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+
+// Users database
+// Separate this to its own file when refactoring**
+const users = {};
 
 app.get('/', (req, res) => {
   res.send('Hello!');
@@ -72,6 +77,21 @@ app.post('/urls', (req, res) => {
   urlDatabase[randomString] = req.body.longURL;
   console.log(urlDatabase);
   res.redirect(`/urls/${randomString}`);
+});
+
+app.post('/register', (req, res) => {
+  const {email, password} = req.body;
+  const userID = generateRandomString();
+
+  res.cookie('user_id', userID);
+  
+  users[userID] = {
+    id: userID,
+    email,
+    password
+  };
+
+  res.redirect('/urls');
 });
 
 app.post('/urls/:shortURL/delete', (req, res) => {
