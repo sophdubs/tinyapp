@@ -35,7 +35,7 @@ app.use(cookieSession({
 // Home page
 app.get('/', (req, res) => {
   // Redirect to login if not logged in
-  let userID = req.session.user_id;
+  const userID = req.session.user_id;
   if (! userID) {
     res.redirect('/login');
     return;
@@ -47,11 +47,11 @@ app.get('/', (req, res) => {
 // Displays a list of all the shortURLs and the associated longURLs created by the current user
 app.get('/urls', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
-  let userID = req.session.user_id;
+  const userID = req.session.user_id;
   // filtering the urls based on the current user so the user can only see their own urls
   const filteredURLs = urlsForUser(userID, urlDatabase);
-  let user = users[userID];
-  let templateVars = {
+  const user = users[userID];
+  const templateVars = {
     urls: filteredURLs,
     user
   };
@@ -61,7 +61,7 @@ app.get('/urls', (req, res) => {
 // Form to create a new shortURL and add it to database
 app.get('/urls/new', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
-  let userID = req.session.user_id;
+  const userID = req.session.user_id;
 
   // If user is not logged in, they cannot create new urls are are redirected to login page
   if (!userID) {
@@ -69,8 +69,8 @@ app.get('/urls/new', (req, res) => {
     return;
   }
 
-  let user = users[userID];
-  let templateVars = {
+  const user = users[userID];
+  const templateVars = {
     user
   };
   res.render("urls_new", templateVars);
@@ -79,16 +79,16 @@ app.get('/urls/new', (req, res) => {
 // Shows page for individual shortURL
 app.get('/urls/:shortURL', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
-  let userID = req.session.user_id;
-  let shortURL = req.params.shortURL;
+  const userID = req.session.user_id;
+  const shortURL = req.params.shortURL;
   // If record does not exist, return status code 400 and relevent HTML
   if (!urlDatabase[shortURL]) {
     res.status(400).render('no_record', {shortURL, user: users[userID]});
     return;
   }
-  let isCreator = urlDatabase[shortURL].userID === userID;
-  let user = users[userID];
-  let templateVars = {
+  const isCreator = urlDatabase[shortURL].userID === userID;
+  const user = users[userID];
+  const templateVars = {
     shortURL: shortURL,
     longURL: urlDatabase[shortURL].longURL,
     user,
@@ -99,8 +99,8 @@ app.get('/urls/:shortURL', (req, res) => {
 
 // Redirects the user to the longURL associated to the given shortURL
 app.get('/u/:shortURL', (req, res) => {
-  let userID = req.session.user_id;
-  let shortURL = req.params.shortURL;
+  const userID = req.session.user_id;
+  const shortURL = req.params.shortURL;
   // If shortURL doesn't exist, return statuscode 400 and relevent html
   if (!urlDatabase[shortURL]) {
     res.status(400).render('no_record', {shortURL, user: users[userID]});
@@ -122,7 +122,7 @@ app.get('/hello', (req, res) => {
 // Form for user to register as a new user
 app.get('/register', (req, res) => {
   // If user is logged in, they are redirected to /urls
-  let userID = req.session.user_id;
+  const userID = req.session.user_id;
   if (userID) {
     res.redirect('/urls');
     return;
@@ -134,7 +134,7 @@ app.get('/register', (req, res) => {
 // Form for user to login as existing user
 app.get('/login', (req, res) => {
   // If user is already logged in, they are redirected to /urls
-  let userID = req.session.user_id;
+  const userID = req.session.user_id;
   if (userID) {
     res.redirect('/urls');
     return;
@@ -148,8 +148,8 @@ app.get('/login', (req, res) => {
 
 // Creating a new shortURL/longURL entry in the database and redirect to /urls
 app.post('/urls', (req, res) => {
-  let randomString = generateRandomString();
-  let currUser = req.session.user_id;
+  const randomString = generateRandomString();
+  const currUser = req.session.user_id;
   urlDatabase[randomString] = {
     longURL: req.body.longURL,
     userID: currUser
@@ -182,7 +182,7 @@ app.post('/register', ensureCredentialsPresent, (req, res) => {
 
 // Deletes short url from db
 app.post('/urls/:shortURL/delete', (req, res) => {
-  let currUser = req.session.user_id;
+  const currUser = req.session.user_id;
   if (currUser !== urlDatabase[req.params.shortURL].userID) {
     res.status(400).send('Error: cannot delete another creator\'s URL \n');
     return;
@@ -193,12 +193,12 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 
 // Edit urlDatabase to update the value of the longURL
 app.post('/urls/:shortURL', (req, res) => {
-  let currUser = req.session.user_id;
+  const currUser = req.session.user_id;
   if (currUser !== urlDatabase[req.params.shortURL].userID) {
     res.status(400).send('Error: cannot edit another creator\'s URL\n');
     return;
   }
-  let newLongURL = req.body.new_long_URL;
+  const newLongURL = req.body.new_long_URL;
   urlDatabase[req.params.shortURL].longURL = newLongURL;
   res.redirect('/urls');
 });

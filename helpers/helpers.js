@@ -30,8 +30,8 @@ const findUserByEmail = (email, db) => {
 
 // Returns a filtered object containing only the url objects that were created by the given user
 const urlsForUser = (userID, db) => {
-  let usersURLs = {};
-  for (let [id, urlObj] of Object.entries(db)) {
+  const usersURLs = {};
+  for (const [id, urlObj] of Object.entries(db)) {
     if (urlObj.userID === userID) {
       usersURLs[id] = urlObj;
     }

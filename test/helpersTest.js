@@ -34,7 +34,7 @@ describe('#addUserToDB', function() {
 });
 
 describe('#generateRandomString', function() {
-  let randomString = generateRandomString();
+  const randomString = generateRandomString();
   it('should generate a random alphanumeric string', function() {
     expect(!randomString.match(/^[A-Za-z0-9]+$/)).to.be.false;
   });
@@ -45,11 +45,11 @@ describe('#generateRandomString', function() {
 
 describe('#userExists', function() {
   it('should return true if user exists in the user database', function() {
-    let email = 'user@example.com';
+    const email = 'user@example.com';
     expect(userExists(email, testUsers)).to.be.true;
   });
   it('should return false if user does not exist in the user database', function() {
-    let email = 'notAuser@example.com';
+    const email = 'notAuser@example.com';
     expect(userExists(email, testUsers)).to.be.false;
   });
 });
@@ -64,7 +64,7 @@ describe('#findUserByEmail', function() {
     });
   });
   it('should return undefined if user does not exist in the user database', function() {
-    let email = 'notAuser@example.com';
+    const email = 'notAuser@example.com';
     expect(findUserByEmail(email, testUsers)).to.be.undefined;
   });
 });
