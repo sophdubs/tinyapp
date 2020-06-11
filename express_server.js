@@ -182,7 +182,7 @@ app.post('/register', ensureCredentialsPresent, (req, res) => {
 app.post('/urls/:shortURL/delete', (req, res) => {
   let currUser = req.session.user_id;
   if (currUser !== urlDatabase[req.params.shortURL].userID) {
-    res.status(400).send('Error: cannot delete another creator\'s URL');
+    res.status(400).send('Error: cannot delete another creator\'s URL \n');
     return;
   }
   delete urlDatabase[req.params.shortURL];
@@ -193,7 +193,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 app.post('/urls/:shortURL', (req, res) => {
   let currUser = req.session.user_id;
   if (currUser !== urlDatabase[req.params.shortURL].userID) {
-    res.status(400).send('Error: cannot edit another creator\'s URL');
+    res.status(400).send('Error: cannot edit another creator\'s URL\n');
     return;
   }
   let newLongURL = req.body.new_long_URL;
