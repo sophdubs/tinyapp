@@ -144,6 +144,11 @@ app.post('/register', (req, res) => {
 
 // Deletes short url from db
 app.post('/urls/:shortURL/delete', (req, res) => {
+  let currUser = req.cookies['user_id'];
+  if (currUser !== urlDatabase[req.params.shortURL].userID) {
+    res.status(400).send('Error: cannot delete another creator\'s URL');
+    return;
+  }
   delete urlDatabase[req.params.shortURL];
   res.redirect('/urls');
 });
