@@ -109,16 +109,6 @@ app.get('/u/:shortURL', (req, res) => {
   res.redirect(urlDatabase[shortURL].longURL);
 });
 
-// Displays the urlDatabase in javascript object notation (JSON)
-app.get('/urls.json', (req, res) => {
-  res.json(urlDatabase);
-});
-
-// Renders the html directly on the page
-app.get('/hello', (req, res) => {
-  res.send('<html><body>Hello <b>World</b></body></html>\n');
-});
-
 // Form for user to register as a new user
 app.get('/register', (req, res) => {
   // If user is logged in, they are redirected to /urls
