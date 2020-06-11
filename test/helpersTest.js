@@ -21,19 +21,28 @@ describe('#addUserToDB', function() {
     const email = 'test@gmail.com';
     const password = "password";
     addUserToDB(email, password, id, testUsers);
-    // Checking that the entry exists
     expect(testUsers['1234']).to.not.be.undefined;
-    // Checking that the user object matches the expected user object
     expect(testUsers['1234']).to.deep.equal({id: '1234', email: 'test@gmail.com', password: 'password'});
   });
 });
 
 describe('#generateRandomString', function() {
-  it('should generate a random alphanumeric string of 6 characters', function() {
-    let randomString = generateRandomString();
-    // Checking that string is alphanumeric
-    expect(!'randomString'.match(/^[A-Za-z0-9]+$/)).to.be.false;
-    // Checking that string is of length 6
+  let randomString = generateRandomString();
+  it('should generate a random alphanumeric string', function() {
+    expect(!randomString.match(/^[A-Za-z0-9]+$/)).to.be.false;
+  });
+  it('should generate a random string of length 6', function() {
     expect(randomString.length).to.equal(6);
+  });
+});
+
+describe('#userExists', function() {
+  it('should return true if user exists in the user database', function() {
+    let email = 'user@example.com'
+    expect(userExists(email, testUsers)).to.be.true;
+  });
+  it('should return false if user does not exist in the user database', function() {
+    let email = 'notAuser@example.com'
+    expect(userExists(email, testUsers)).to.be.false;
   });
 });
