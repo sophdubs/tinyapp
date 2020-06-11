@@ -46,3 +46,18 @@ describe('#userExists', function() {
     expect(userExists(email, testUsers)).to.be.false;
   });
 });
+
+describe('#findUserByEmail', function() {
+  it('should return the user if user exists in the user database', function() {
+    const email = 'user@example.com';
+    expect(findUserByEmail(email, testUsers)).to.deep.equal({
+      id: "userRandomID", 
+      email: "user@example.com", 
+      password: "purple-monkey-dinosaur"
+    });
+  });
+  it('should return undefined if user does not exist in the user database', function() {
+    let email = 'notAuser@example.com'
+    expect(findUserByEmail(email, testUsers)).to.be.undefined;
+  });
+});
