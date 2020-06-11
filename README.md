@@ -26,7 +26,7 @@ This is the form a user will see when creating a new tiny URL.
 - Install all dependencies (using the `npm install` command).
 - Run the development web server using the `node express_server.js` command.
 
-## Project Implementation
+## Project Implementation Details
 - This project required us to build an Express server and handle HTTP requests according to RESTful conventions. 
 - I was able to ensure user security by hashing the passwords before storing them in the user database as well as encrypting the cookies.
 - I decided to organise my project directory according to MVC conventions:
