@@ -155,6 +155,11 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 
 // Edit urlDatabase to update the value of the longURL
 app.post('/urls/:shortURL', (req, res) => {
+  let currUser = req.cookies['user_id'];
+  if (currUser !== urlDatabase[req.params.shortURL].userID) {
+    res.status(400).send('Error: cannot edit another creator\'s URL');
+    return;
+  }
   let newLongURL = req.body.new_long_URL;
   urlDatabase[req.params.shortURL].longURL = newLongURL;
   res.redirect('/urls');
