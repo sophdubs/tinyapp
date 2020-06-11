@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const { users } = require('./models/user_data');
 const { urlDatabase } = require('./models/url_data');
 // Importing helper functions
-const { addUserToDB, generateRandomString, userExists, findUserByEmail } = require('./helpers/helpers');
+const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser } = require('./helpers/helpers');
 // declaring variables
 const PORT = 8080;
 
@@ -28,19 +28,7 @@ app.get('/', (req, res) => {
   res.send('Hello!');
 });
 
-
-const urlsForUser = userID => { 
-  let usersURLs = {};
-  for (let [id, urlObj] of Object.entries(urlDatabase)) {
-    if (urlObj.userID === userID) {
-      usersURLs[id] = urlObj;
-    }
-  }
-  return usersURLs;
-};
-
-
-// Displays a list of all shortURL and their associated longURL from the urlDatabase
+// Displays a list of all the shortURLs and the associated longURLs created by the current user
 app.get('/urls', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
   let userID = req.cookies['user_id'];
