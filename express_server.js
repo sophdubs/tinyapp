@@ -77,9 +77,9 @@ app.get('/urls/:shortURL', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
   let userID = req.session.user_id;
   let shortURL = req.params.shortURL;
-  // If record does not exist, return status code 400 and relevent message
+  // If record does not exist, return status code 400 and relevent HTML
   if (!urlDatabase[shortURL]) {
-    res.status(400).send(`Error: no records matching 'urls/${shortURL}'`);
+    res.status(400).render('no_record', {shortURL, user: users[userID]});
     return;
   }
   let isCreator = urlDatabase[shortURL].userID === userID;
@@ -95,11 +95,14 @@ app.get('/urls/:shortURL', (req, res) => {
 
 // Redirects the user to the longURL associated to the given shortURL
 app.get('/u/:shortURL', (req, res) => {
-  if (!urlDatabase[req.params.shortURL]) {
-    res.status(400).send(`Error: no record matching '/u/${req.params.shortURL}'`);
+  let userID = req.session.user_id;
+  let shortURL = req.params.shortURL;
+  // If shortURL doesn't exist, return statuscode 400 and relevent html
+  if (!urlDatabase[shortURL]) {
+    res.status(400).render('no_record', {shortURL, user: users[userID]});
     return;
   }
-  res.redirect(urlDatabase[req.params.shortURL].longURL);
+  res.redirect(urlDatabase[shortURL].longURL);
 });
 
 // Displays the urlDatabase in javascript object notation (JSON)
