@@ -76,11 +76,17 @@ app.get('/urls/new', (req, res) => {
 app.get('/urls/:shortURL', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
   let userID = req.session.user_id;
-  let isCreator = urlDatabase[req.params.shortURL].userID === userID;
+  let shortURL = req.params.shortURL;
+  // If record does not exist, return status code 400 and relevent message
+  if (!urlDatabase[shortURL]) {
+    res.status(400).send(`Error: no records matching 'urls/${shortURL}'`);
+    return;
+  }
+  let isCreator = urlDatabase[shortURL].userID === userID;
   let user = users[userID];
   let templateVars = {
-    shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL].longURL,
+    shortURL: shortURL,
+    longURL: urlDatabase[shortURL].longURL,
     user,
     isCreator
   };
@@ -89,6 +95,10 @@ app.get('/urls/:shortURL', (req, res) => {
 
 // Redirects the user to the longURL associated to the given shortURL
 app.get('/u/:shortURL', (req, res) => {
+  if (!urlDatabase[req.params.shortURL]) {
+    res.status(400).send(`Error: no record matching '/u/${req.params.shortURL}'`);
+    return;
+  }
   res.redirect(urlDatabase[req.params.shortURL].longURL);
 });
 
@@ -104,13 +114,25 @@ app.get('/hello', (req, res) => {
 
 // Form for user to register as a new user
 app.get('/register', (req, res) => {
-  const templateVars = {user: null};
+  // If user is logged in, they are redirected to /urls
+  let userID = req.session.user_id;
+  if (userID) {
+    res.redirect('/urls');
+    return;
+  }
+  const templateVars = {user: userID};
   res.render("register", templateVars);
 });
 
 // Form for user to login as existing user
 app.get('/login', (req, res) => {
-  const templateVars = {user: null};
+  // If user is already logged in, they are redirected to /urls
+  let userID = req.session.user_id;
+  if (userID) {
+    res.redirect('/urls');
+    return;
+  }
+  const templateVars = {user: userID};
   res.render("login", templateVars);
 });
 
