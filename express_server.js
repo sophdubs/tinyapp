@@ -29,18 +29,26 @@ app.get('/', (req, res) => {
 });
 
 
-// const urlsForUser = id => {
-
-// };
+const urlsForUser = userID => { 
+  let usersURLs = {};
+  for (let [id, urlObj] of Object.entries(urlDatabase)) {
+    if (urlObj.userID === userID) {
+      usersURLs[id] = urlObj;
+    }
+  }
+  return usersURLs;
+};
 
 
 // Displays a list of all shortURL and their associated longURL from the urlDatabase
 app.get('/urls', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
   let userID = req.cookies['user_id'];
+  // filtering the urls based on the current user so the user can only see their own urls
+  const filteredURLs = urlsForUser(userID);
   let user = users[userID];
   let templateVars = {
-    urls: urlDatabase,
+    urls: filteredURLs,
     user
   };
   res.render("urls_index", templateVars);
