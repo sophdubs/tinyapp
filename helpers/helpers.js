@@ -1,6 +1,3 @@
-const { users } = require('../models/user_data');
-const { urlDatabase } = require('../models/url_data');
-
 // Adds user to db
 const addUserToDB = function(email, password, userID, db) {
   db[userID] = {
@@ -32,7 +29,7 @@ const findUserByEmail = (email, db) => {
 };
 
 // Returns a filtered object containing only the url objects that were created by the given user
-const urlsForUser = (userID, db) => { 
+const urlsForUser = (userID, db) => {
   let usersURLs = {};
   for (let [id, urlObj] of Object.entries(db)) {
     if (urlObj.userID === userID) {

@@ -13,6 +13,8 @@ const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForU
 // declaring variables
 const PORT = 8080;
 const SALT = 10;
+// Added line below because it was causing eslint errors with the user_id property when using cookie-session
+/* eslint-disable camelcase */
 
 
 // Initializing app

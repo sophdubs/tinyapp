@@ -1,16 +1,16 @@
-const { assert, expect } = require('chai');
+const { expect } = require('chai');
 
 const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser } = require('../helpers/helpers');
 
 const testUsers = {
   "userRandomID": {
-    id: "userRandomID", 
-    email: "user@example.com", 
+    id: "userRandomID",
+    email: "user@example.com",
     password: "purple-monkey-dinosaur"
   },
   "user2RandomID": {
-    id: "user2RandomID", 
-    email: "user2@example.com", 
+    id: "user2RandomID",
+    email: "user2@example.com",
     password: "dishwasher-funk"
   }
 };
@@ -20,7 +20,7 @@ const testUrlDB = {
   i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" },
   test01: { longURL: "https://www.testURL1.ca", userID: "AAAAAA" },
   test02: { longURL: "https://www.testURL2.ca", userID: "AAAAAA" }
-}
+};
 
 describe('#addUserToDB', function() {
   it('should successfully add user to user database', function() {
@@ -45,11 +45,11 @@ describe('#generateRandomString', function() {
 
 describe('#userExists', function() {
   it('should return true if user exists in the user database', function() {
-    let email = 'user@example.com'
+    let email = 'user@example.com';
     expect(userExists(email, testUsers)).to.be.true;
   });
   it('should return false if user does not exist in the user database', function() {
-    let email = 'notAuser@example.com'
+    let email = 'notAuser@example.com';
     expect(userExists(email, testUsers)).to.be.false;
   });
 });
@@ -58,20 +58,20 @@ describe('#findUserByEmail', function() {
   it('should return the user if user exists in the user database', function() {
     const email = 'user@example.com';
     expect(findUserByEmail(email, testUsers)).to.deep.equal({
-      id: "userRandomID", 
-      email: "user@example.com", 
+      id: "userRandomID",
+      email: "user@example.com",
       password: "purple-monkey-dinosaur"
     });
   });
   it('should return undefined if user does not exist in the user database', function() {
-    let email = 'notAuser@example.com'
+    let email = 'notAuser@example.com';
     expect(findUserByEmail(email, testUsers)).to.be.undefined;
   });
 });
 
 describe('#urlsForUser', function() {
   const user1 = 'AAAAAA';
-  const user2 = 'BBBBBB'
+  const user2 = 'BBBBBB';
   const urlsForUser1 = urlsForUser(user1, testUrlDB);
   it('should return a filtered object containing only the urls created by the user', function() {
     expect(Object.keys(urlsForUser1).length).to.equal(2);
