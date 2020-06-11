@@ -6,6 +6,8 @@ const cookieSession = require('cookie-session');
 // Importing databases
 const { users } = require('./models/user_data');
 const { urlDatabase } = require('./models/url_data');
+// Importing custom middleware
+const { ensureCredentialsPresent } = require('./helpers/middleware');
 // Importing helper functions
 const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser } = require('./helpers/helpers');
 // declaring variables
@@ -154,16 +156,11 @@ app.post('/urls', (req, res) => {
 });
 
 // Adds new user to users db
-app.post('/register', (req, res) => {
+// Using cutom middleware (ensureCredentialsPresent) to verify if both email and password were filled in
+app.post('/register', ensureCredentialsPresent, (req, res) => {
   const {email, password} = req.body;
   // Use bcrypt to hash the password so as not to store it in plain text in our users db
   const hashedPassword = bcrypt.hashSync(password, SALT);
-
-  // If email or password is empty string, send back response with 400 status code
-  if (!email || !password) {
-    res.status(400).render('invalid_credentials', { errorMsg:'Error: email and/or password field empty.', user: null});
-    return;
-  }
 
   // If user tries to register with an email already in the users DB, sent back response with 400 status code
   if (userExists(email, users)) {
@@ -205,7 +202,8 @@ app.post('/urls/:shortURL', (req, res) => {
 });
 
 // Login user
-app.post('/login', (req, res) => {
+// Using custom middleware (ensureCredentialsPresent) to verify email and password fields were both filled in
+app.post('/login', ensureCredentialsPresent, (req, res) => {
   // extract information from request
   const {email, password} = req.body;
 
