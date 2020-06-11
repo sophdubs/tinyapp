@@ -2,6 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 // Importing databases
 const { users } = require('./models/user_data');
 const { urlDatabase } = require('./models/url_data');
@@ -9,6 +10,7 @@ const { urlDatabase } = require('./models/url_data');
 const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser } = require('./helpers/helpers');
 // declaring variables
 const PORT = 8080;
+const SALT = 10;
 
 
 // Initializing app
@@ -119,6 +121,7 @@ app.post('/urls', (req, res) => {
 // Adds new user to users db
 app.post('/register', (req, res) => {
   const {email, password} = req.body;
+  const hashedPassword = bcrypt.hashSync(password, SALT);
 
   // If email or password is empty string, send back response with 400 status code
   if (!email || !password) {
@@ -134,7 +137,8 @@ app.post('/register', (req, res) => {
 
   // Generate UID and store new user in the db
   const userID = generateRandomString();
-  addUserToDB(email, password, userID);
+  addUserToDB(email, hashedPassword, userID);
+  console.log({users});
   
   // Set cookie to maintain logged in state
   res.cookie('user_id', userID);
