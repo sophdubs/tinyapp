@@ -38,7 +38,7 @@ app.get('/urls', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
   let userID = req.session.user_id;
   // filtering the urls based on the current user so the user can only see their own urls
-  const filteredURLs = urlsForUser(userID);
+  const filteredURLs = urlsForUser(userID, urlDatabase);
   let user = users[userID];
   let templateVars = {
     urls: filteredURLs,

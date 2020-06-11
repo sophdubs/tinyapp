@@ -32,9 +32,9 @@ const findUserByEmail = (email, db) => {
 };
 
 // Returns a filtered object containing only the url objects that were created by the given user
-const urlsForUser = userID => { 
+const urlsForUser = (userID, db) => { 
   let usersURLs = {};
-  for (let [id, urlObj] of Object.entries(urlDatabase)) {
+  for (let [id, urlObj] of Object.entries(db)) {
     if (urlObj.userID === userID) {
       usersURLs[id] = urlObj;
     }
