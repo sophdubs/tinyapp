@@ -30,7 +30,14 @@ app.use(cookieSession({
 
 // Home page
 app.get('/', (req, res) => {
-  res.send('Hello!');
+  // Redirect to login if not logged in
+  let userID = req.session.user_id;
+  if (! userID) {
+    res.redirect('/login');
+    return;
+  }
+  // Redirect to urls if logged in
+  res.redirect('/urls');
 });
 
 // Displays a list of all the shortURLs and the associated longURLs created by the current user
