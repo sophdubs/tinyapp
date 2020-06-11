@@ -2,12 +2,13 @@ const { users } = require('../models/user_data');
 const { urlDatabase } = require('../models/url_data');
 
 // Adds user to db
-const addUserToDB = function(email, password, userID) {
-  users[userID] = {
+const addUserToDB = function(email, password, userID, db) {
+  db[userID] = {
     id: userID,
     email,
     password
   };
+  console.log(db);
 };
 
 // Generates a random string of 6 characters using A-Z, a-z, 0-9 chars.
