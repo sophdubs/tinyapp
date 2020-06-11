@@ -15,6 +15,13 @@ const testUsers = {
   }
 };
 
+const testUrlDB = {
+  b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
+  i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" },
+  test01: { longURL: "https://www.testURL1.ca", userID: "AAAAAA" },
+  test02: { longURL: "https://www.testURL2.ca", userID: "AAAAAA" }
+}
+
 describe('#addUserToDB', function() {
   it('should successfully add user to user database', function() {
     const id = '1234';
@@ -59,5 +66,19 @@ describe('#findUserByEmail', function() {
   it('should return undefined if user does not exist in the user database', function() {
     let email = 'notAuser@example.com'
     expect(findUserByEmail(email, testUsers)).to.be.undefined;
+  });
+});
+
+describe('#urlsForUser', function() {
+  const user1 = 'AAAAAA';
+  const user2 = 'BBBBBB'
+  const urlsForUser1 = urlsForUser(user1, testUrlDB);
+  it('should return a filtered object containing only the urls created by the user', function() {
+    expect(Object.keys(urlsForUser1).length).to.equal(2);
+    expect(urlsForUser1['test01']).to.deep.equal({longURL: "https://www.testURL1.ca", userID: "AAAAAA"});
+    expect(urlsForUser1['test02']).to.deep.equal({longURL: "https://www.testURL2.ca", userID: "AAAAAA"});
+  });
+  it('should return an empty object if user has not created any urls', function() {
+    expect(urlsForUser(user2, testUrlDB)).to.deep.equal({});
   });
 });
