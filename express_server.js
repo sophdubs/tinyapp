@@ -1,8 +1,8 @@
 // Importing node modules
 const express = require('express');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
+const cookieSession = require('cookie-session');
 // Importing databases
 const { users } = require('./models/user_data');
 const { urlDatabase } = require('./models/url_data');
@@ -20,7 +20,10 @@ const app = express();
 // Setting configs and applying middleware
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['f080ac7b-b838-4c5f-a1f4-b0a9fee10130', 'c3fb18be-448b-4f6e-a377-49373e9b7e1a']
+}));
 
 
 // GET ROUTES:
@@ -33,7 +36,7 @@ app.get('/', (req, res) => {
 // Displays a list of all the shortURLs and the associated longURLs created by the current user
 app.get('/urls', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
-  let userID = req.cookies['user_id'];
+  let userID = req.session.user_id;
   // filtering the urls based on the current user so the user can only see their own urls
   const filteredURLs = urlsForUser(userID);
   let user = users[userID];
@@ -47,7 +50,7 @@ app.get('/urls', (req, res) => {
 // Form to create a new shortURL and add it to database
 app.get('/urls/new', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
-  let userID = req.cookies['user_id'];
+  let userID = req.session.user_id;
 
   // If user is not logged in, they cannot create new urls are are redirected to login page
   if (!userID) {
@@ -65,7 +68,7 @@ app.get('/urls/new', (req, res) => {
 // Shows page for individual shortURL
 app.get('/urls/:shortURL', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
-  let userID = req.cookies['user_id'];
+  let userID = req.session.user_id;
   let isCreator = urlDatabase[req.params.shortURL].userID === userID;
   let user = users[userID];
   let templateVars = {
@@ -110,7 +113,7 @@ app.get('/login', (req, res) => {
 // Creating a new shortURL/longURL entry in the database and redirect to /urls
 app.post('/urls', (req, res) => {
   let randomString = generateRandomString();
-  let currUser = req.cookies['user_id'];
+  let currUser = req.session.user_id;
   urlDatabase[randomString] = {
     longURL: req.body.longURL,
     userID: currUser
@@ -141,14 +144,14 @@ app.post('/register', (req, res) => {
   addUserToDB(email, hashedPassword, userID);
   
   // Set cookie to maintain logged in state
-  res.cookie('user_id', userID);
+  req.session.user_id = userID;
   
   res.redirect('/urls');
 });
 
 // Deletes short url from db
 app.post('/urls/:shortURL/delete', (req, res) => {
-  let currUser = req.cookies['user_id'];
+  let currUser = req.session.user_id;
   if (currUser !== urlDatabase[req.params.shortURL].userID) {
     res.status(400).send('Error: cannot delete another creator\'s URL');
     return;
@@ -159,7 +162,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 
 // Edit urlDatabase to update the value of the longURL
 app.post('/urls/:shortURL', (req, res) => {
-  let currUser = req.cookies['user_id'];
+  let currUser = req.session.user_id;
   if (currUser !== urlDatabase[req.params.shortURL].userID) {
     res.status(400).send('Error: cannot edit another creator\'s URL');
     return;
@@ -191,7 +194,7 @@ app.post('/login', (req, res) => {
   }
 
   // User exists and password is a match, set cookie to maintain logged in state
-  res.cookie('user_id', userObj.id);
+  req.session.user_id = userObj.id;
   
   res.redirect('/urls');
 });
@@ -199,7 +202,7 @@ app.post('/login', (req, res) => {
 // Logout user
 app.post('/logout', (req, res) => {
   // Clear cookie to return to a logged out state
-  res.clearCookie('user_id');
+  req.session.user_id = null;
   
   res.redirect('/urls');
 });
