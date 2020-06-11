@@ -26,8 +26,8 @@ const userExists = (email, db) => {
 };
 
 // Returns user matching the given email
-const findUserByEmail = email => {
-  const user = Object.values(users).find(user => user.email === email);
+const findUserByEmail = (email, db) => {
+  const user = Object.values(db).find(user => user.email === email);
   return user;
 };
 

@@ -178,7 +178,7 @@ app.post('/login', (req, res) => {
   const {email, password} = req.body;
 
   // find user in users DB by email (if no user is found, user will be undefined)
-  const userObj = findUserByEmail(email);
+  const userObj = findUserByEmail(email, users);
 
   // if no user with that email, return response with 403 status code
   if (!userObj) {
