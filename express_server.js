@@ -64,11 +64,13 @@ app.get('/urls/new', (req, res) => {
 app.get('/urls/:shortURL', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
   let userID = req.cookies['user_id'];
+  let isCreator = urlDatabase[req.params.shortURL].userID === userID;
   let user = users[userID];
   let templateVars = {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL].longURL,
-    user
+    user,
+    isCreator
   };
   res.render("urls_show", templateVars);
 });
