@@ -121,6 +121,7 @@ app.post('/urls', (req, res) => {
 // Adds new user to users db
 app.post('/register', (req, res) => {
   const {email, password} = req.body;
+  // Use bcrypt to hash the password so as not to store it in plain text in our users db
   const hashedPassword = bcrypt.hashSync(password, SALT);
 
   // If email or password is empty string, send back response with 400 status code
@@ -138,7 +139,6 @@ app.post('/register', (req, res) => {
   // Generate UID and store new user in the db
   const userID = generateRandomString();
   addUserToDB(email, hashedPassword, userID);
-  console.log({users});
   
   // Set cookie to maintain logged in state
   res.cookie('user_id', userID);
@@ -184,7 +184,8 @@ app.post('/login', (req, res) => {
   }
 
   // if user exists but password does not match, return response with 4-3 status code
-  if (userObj.password !== password) {
+  // (using bcrypt to compare passwords because stored password has been hashed)
+  if (!bcrypt.compareSync(password, userObj.password)) {
     res.status(403).send('Password is incorrect');
     return;
   }
