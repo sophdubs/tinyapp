@@ -161,13 +161,13 @@ app.post('/register', (req, res) => {
 
   // If email or password is empty string, send back response with 400 status code
   if (!email || !password) {
-    res.status(400).send('Error: email and/or password field empty.');
+    res.status(400).render('invalid_credentials', { errorMsg:'Error: email and/or password field empty.', user: null});
     return;
   }
 
   // If user tries to register with an email already in the users DB, sent back response with 400 status code
   if (userExists(email, users)) {
-    res.status(400).send('Error: email is already registered.');
+    res.status(400).render('invalid_credentials', { errorMsg:`Error: ${email} is already registered`, user: null});
     return;
   }
 
@@ -214,14 +214,14 @@ app.post('/login', (req, res) => {
 
   // if no user with that email, return response with 403 status code
   if (!userObj) {
-    res.status(403).send('That email is not registered');
+    res.status(400).render('invalid_credentials', { errorMsg:`Error: ${email} is not registered`, user: null});
     return;
   }
 
   // if user exists but password does not match, return response with 4-3 status code
   // (using bcrypt to compare passwords because stored password has been hashed)
   if (!bcrypt.compareSync(password, userObj.password)) {
-    res.status(403).send('Password is incorrect');
+    res.status(400).render('invalid_credentials', { errorMsg:'Error: invalid email/password combination', user: null});
     return;
   }
 
