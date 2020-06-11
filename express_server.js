@@ -241,5 +241,5 @@ app.post('/logout', (req, res) => {
 
 // Starts server on given port
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`Server listening on port ${PORT}!`);
 });
