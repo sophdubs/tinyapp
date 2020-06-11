@@ -141,7 +141,7 @@ app.post('/register', (req, res) => {
 
   // Generate UID and store new user in the db
   const userID = generateRandomString();
-  addUserToDB(email, hashedPassword, userID);
+  addUserToDB(email, hashedPassword, userID, users);
   
   // Set cookie to maintain logged in state
   req.session.user_id = userID;
