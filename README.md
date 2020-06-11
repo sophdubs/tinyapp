@@ -5,7 +5,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 ## Final Product
 
 !["Screenshot of URLs page"](https://github.com/sophdubs/tinyapp/blob/master/docs/urls-page.png?raw=true)
-!["Screenshot of Register form"]
+!["Screenshot of Register form"](https://github.com/sophdubs/tinyapp/blob/master/docs/register.png?raw=true)
 !["Screenshot of new URL form"]
 
 
