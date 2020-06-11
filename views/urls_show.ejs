@@ -30,17 +30,16 @@
   <% } else { %>
     <main>
       <div class="card text-center">
-        <div class="card-header"></div>
         <div class="card-body">
           <h5 class="card-title">TinyURL for: <%= longURL %></h5>
-          <p class="card-text">Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></p>
+          <p class="card-text">Short URL: <a href="/u/<%= shortURL %>" class="text-success"><%= shortURL %></a></p>
         </div>
         <div class="card-footer text-muted">
           <h2>Edit</h2>
           <form method="POST" action="/urls/<%=shortURL%>" class="form-inline justify-content-center" role="form">
             <label class="mx-2">New URL: </label>
             <input name="new_long_URL" class="form-control" placeholder="https://"/>
-            <button type="submit" class="btn btn-primary mx-2">Submit</button>
+            <button type="submit" class="btn btn-success mx-2">Submit</button>
           </form>
         </div>
       </div>
