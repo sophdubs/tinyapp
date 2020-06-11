@@ -134,7 +134,7 @@ app.post('/register', (req, res) => {
   }
 
   // If user tries to register with an email already in the users DB, sent back response with 400 status code
-  if (userExists(email)) {
+  if (userExists(email, users)) {
     res.status(400).send('Error: email is already registered.');
     return;
   }

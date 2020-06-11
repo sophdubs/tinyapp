@@ -8,7 +8,6 @@ const addUserToDB = function(email, password, userID, db) {
     email,
     password
   };
-  console.log(db);
 };
 
 // Generates a random string of 6 characters using A-Z, a-z, 0-9 chars.
@@ -22,8 +21,8 @@ const generateRandomString = function() {
 };
 
 // Returns boolean based on if user email is already in user database.
-const userExists = email => {
-  return (Object.values(users).find(user => user.email === email) !== undefined);
+const userExists = (email, db) => {
+  return (Object.values(db).find(user => user.email === email) !== undefined);
 };
 
 // Returns user matching the given email
