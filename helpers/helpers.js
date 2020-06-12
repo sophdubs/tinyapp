@@ -39,5 +39,14 @@ const urlsForUser = (userID, db) => {
   return usersURLs;
 };
 
+const addURLToAnalytics = (shortURL, db) => {
+  let urlObj = {
+    dateCreated: new Date(Date.now()).toLocaleString(),
+    visits: 0,
+    visitors: {}
+  };
+  db[shortURL] = urlObj;
+};
 
-module.exports = { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser };
+
+module.exports = { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics };

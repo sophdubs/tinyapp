@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser } = require('../helpers/helpers');
+const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics } = require('../helpers/helpers');
 
 const testUsers = {
   "userRandomID": {
@@ -80,5 +80,21 @@ describe('#urlsForUser', function() {
   });
   it('should return an empty object if user has not created any urls', function() {
     expect(urlsForUser(user2, testUrlDB)).to.deep.equal({});
+  });
+});
+
+describe('#addURLToAnalytics', function() {
+  const testAnalyticsDB = {};
+  const testEntry = {
+    dateCreated: new Date(Date.now()).toLocaleString(),
+    visits: 0,
+    visitors: {}
+  };
+  addURLToAnalytics('hello', testAnalyticsDB);
+  it('should now have a key matching the short URL that was passed in', function() {
+    expect(Object.keys(testAnalyticsDB)[0]).to.equal('hello');
+  });
+  it('should generate an object containing the tinyURLs analytics as the value', function() {
+    expect(testAnalyticsDB['hello']).to.deep.equal(testEntry);
   });
 });
