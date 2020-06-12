@@ -4,13 +4,13 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 This is the URLs page a logged in user might see. Only the urls create by the current logged in user are visible.
-!["Screenshot of URLs page"](https://github.com/sophdubs/tinyapp/blob/master/docs/urls-page.png?raw=true)
+!["Screenshot of URLs page"]
 
 This is the register form a user might see. It is very similar to the login page.
-!["Screenshot of Register form"](https://github.com/sophdubs/tinyapp/blob/master/docs/register.png?raw=true)
+!["Screenshot of Register form"]
 
 This is the form a user will see when creating a new tiny URL.
-!["Screenshot of new URL form"](https://github.com/sophdubs/tinyapp/blob/master/docs/new-url.png?raw=true)
+!["Screenshot of new URL form"]
 
 ## Dependencies
 
@@ -20,14 +20,21 @@ This is the form a user will see when creating a new tiny URL.
 - bcrypt
 - body-parser
 - cookie-session
+- method-override
 
 ## Getting Started
 
 - Install all dependencies (using the `npm install` command).
 - Run the development web server using the `node express_server.js` command.
 
-## Project Implementation Details
-- This project required us to build an Express server and handle HTTP requests according to RESTful conventions. 
+## Project Stack
+- Web Server: Node JS
+- Middleware: Express
+- Template Engine: EJS
+- Database: In memory object
+
+## Customizations
+- This project required us to build an Express server and handle HTTP requests according to RESTful conventions. For this, I had to use method-override to be able to use the PUT and DELETE routes. 
 - I was able to ensure user security by hashing the passwords before storing them in the user database as well as encrypting the cookies.
 - I decided to organise my project directory according to MVC conventions:
   - All data can be found in the models directory
@@ -36,3 +43,9 @@ This is the form a user will see when creating a new tiny URL.
   - All helper functions have been factored out to their own file and fully tested. 
 - I created a custom middleware, ensureCredentialsPresent, to handle incomming POST '/login' and POST '/register' requests. This middleware ensures the user filled out both the email and password fields before logging in or registering. If they have not, a page explaining the missing credentials is rendered. 
 - I also played around with the style to keep the colors and forms more consistent. 
+- I made a few additional views (not required by the project specs) to display error messages and analytics details.
+
+
+## Known Issues
+- All data is stored in a local object. Therefore, data is non-persistant. Every time the server is restarted, all users, urls and associated analytics is wiped clean. 
+- When running the program from my vagrant machine, the time stamp seems to be off by a few hours. When running on my local machine, this issue is not present. 
