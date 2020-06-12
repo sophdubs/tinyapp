@@ -56,6 +56,7 @@ app.get('/urls', (req, res) => {
   const user = users[userID];
   const templateVars = {
     urls: filteredURLs,
+    analytics: analyticsDB,
     user
   };
   res.render("urls_index", templateVars);

@@ -86,7 +86,7 @@ describe('#urlsForUser', function() {
 describe('#addURLToAnalytics', function() {
   const testAnalyticsDB = {};
   const testEntry = {
-    dateCreated: new Date(Date.now()).toLocaleString(),
+    dateCreated: new Date(Date.now()).toLocaleString().split(',')[0],
     visits: 0,
     visitors: {}
   };
@@ -107,7 +107,7 @@ describe('#updateURLAnalytics', function() {
       visitors: {}
     }
   };
-  let testDate = new Date(Date.now()).toLocaleString();
+  let testDate = new Date(Date.now()).toLocaleString().split(',')[0];
   updateURLAnalytics('hello', 'user1', testAnalyticsDB);
   it('should increase the number of visits by one', function() {
     expect(testAnalyticsDB.hello.visits).to.equal(1);

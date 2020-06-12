@@ -41,7 +41,7 @@ const urlsForUser = (userID, db) => {
 
 const addURLToAnalytics = (shortURL, db) => {
   let urlObj = {
-    dateCreated: new Date(Date.now()).toLocaleString(),
+    dateCreated: new Date(Date.now()).toLocaleString().split(',')[0],
     visits: 0,
     visitors: {}
   };
@@ -54,10 +54,10 @@ const updateURLAnalytics = (shortURL, userID, db) => {
   // if user has never visited this link, 
   if (db[shortURL].visitors[userID]) {
     // if user has visited before, add current date to array
-    db[shortURL].visitors[userID].push(new Date(Date.now()).toLocaleString());
+    db[shortURL].visitors[userID].push(new Date(Date.now()).toLocaleString().split(',')[0]);
   } else {
     // add user_id as key and array with current date as value in the visitors object
-    db[shortURL].visitors[userID] = [new Date(Date.now()).toLocaleString()];
+    db[shortURL].visitors[userID] = [new Date(Date.now()).toLocaleString().split(',')[0]];
   } 
 }
 
