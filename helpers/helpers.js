@@ -54,12 +54,25 @@ const updateURLAnalytics = (shortURL, userID, db) => {
   // if user has never visited this link, 
   if (db[shortURL].visitors[userID]) {
     // if user has visited before, add current date to array
-    db[shortURL].visitors[userID].push(new Date(Date.now()).toLocaleString().split(',')[0]);
+    db[shortURL].visitors[userID].push(Date.now());
   } else {
     // add user_id as key and array with current date as value in the visitors object
-    db[shortURL].visitors[userID] = [new Date(Date.now()).toLocaleString().split(',')[0]];
+    db[shortURL].visitors[userID] = [Date.now()];
   } 
 }
 
+const processVisitors = (visitors) => {
+  visitorArray = [];
+  for (const [visitor, dates] of Object.entries(visitors)) {
+    for (const date of dates) {
+      let subArr = [visitor];
+      subArr.push(date);
+      visitorArray.push(subArr);
+    }
+  }
 
-module.exports = { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics };
+  return visitorArray;
+};
+
+
+module.exports = { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics, processVisitors };

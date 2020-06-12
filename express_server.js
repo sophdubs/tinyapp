@@ -95,6 +95,7 @@ app.get('/urls/:shortURL', (req, res) => {
   const templateVars = {
     shortURL: shortURL,
     longURL: urlDatabase[shortURL].longURL,
+    analytics: analyticsDB[shortURL],
     user,
     isCreator
   };
@@ -103,6 +104,23 @@ app.get('/urls/:shortURL', (req, res) => {
 
 app.get('/analytics', (req, res) => {
   res.json(analyticsDB);
+});
+
+app.get('/urls/:shortURL/analytics', (req, res) => {
+  const userID = req.session.user_id;
+  const shortURL = req.params.shortURL;
+  // If that URL doesnt exist, return statuscode 400 and relevent html
+  if (!urlDatabase[shortURL]) {
+    res.status(400).render('no_record', {shortURL, user: users[userID]});
+    return;
+  }
+  // I want to sort the visitors first before passing them through template vars
+  const templateVars = {
+    shortURL, 
+    user: userID,
+    analytics: analyticsDB[shortURL].visitors
+  };
+  res.render('analytics_page', templateVars);
 });
 
 // Redirects the user to the longURL associated to the given shortURL

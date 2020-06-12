@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics } = require('../helpers/helpers');
+const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics, processVisitors } = require('../helpers/helpers');
 
 const testUsers = {
   "userRandomID": {
@@ -107,7 +107,7 @@ describe('#updateURLAnalytics', function() {
       visitors: {}
     }
   };
-  let testDate = new Date(Date.now()).toLocaleString().split(',')[0];
+  let testDate = Date.now();
   updateURLAnalytics('hello', 'user1', testAnalyticsDB);
   it('should increase the number of visits by one', function() {
     expect(testAnalyticsDB.hello.visits).to.equal(1);
@@ -122,5 +122,21 @@ describe('#updateURLAnalytics', function() {
     updateURLAnalytics('hello', 'user1', testAnalyticsDB);
     expect(testAnalyticsDB.hello.visitors['user1'].length).to.equal(2);
   });
-  
 });
+
+describe('#processVisitors', function() {
+  const visitorObj = {
+    'user1': ['visit 1', 'visit2'],
+    'user2': ['visita', 'visitb', 'visitc']
+  };
+  const expectedValue = [ 
+  [ 'user1', 'visit 1' ],
+  [ 'user1', 'visit2' ],
+  [ 'user2', 'visita' ],
+  [ 'user2', 'visitb' ],
+  [ 'user2', 'visitc' ] ]; 
+  it('should destructure the visitors object into an array of arrays', function() {
+    expect(processVisitors(visitorObj)).to.deep.equal(expectedValue);
+  });
+});
+
