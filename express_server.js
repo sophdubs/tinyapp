@@ -184,7 +184,7 @@ app.delete('/urls/:shortURL', (req, res) => {
 });
 
 // Edit urlDatabase to update the value of the longURL
-app.post('/urls/:shortURL', (req, res) => {
+app.put('/urls/:shortURL', (req, res) => {
   const currUser = req.session.user_id;
   if (currUser !== urlDatabase[req.params.shortURL].userID) {
     res.status(400).send('Error: cannot edit another creator\'s URL\n');
