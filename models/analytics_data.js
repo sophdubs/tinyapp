@@ -1,4 +1,4 @@
-const analytics = {};
+const analyticsDB = {};
 
 
 /*
@@ -11,3 +11,5 @@ An entry will look like this:
   }
 }
 */
+
+module.exports = { analyticsDB };

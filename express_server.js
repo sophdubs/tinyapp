@@ -7,10 +7,11 @@ const methodOverride = require('method-override');
 // Importing databases
 const { users } = require('./models/user_data');
 const { urlDatabase } = require('./models/url_data');
+const { analyticsDB } = require('./models/analytics_data');
 // Importing custom middleware
 const { ensureCredentialsPresent } = require('./helpers/middleware');
 // Importing helper functions
-const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser } = require('./helpers/helpers');
+const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics } = require('./helpers/helpers');
 // declaring variables
 const PORT = 8080;
 const SALT = 10;
@@ -140,13 +141,16 @@ app.get('/login', (req, res) => {
 
 // Creating a new shortURL/longURL entry in the database and redirect to /urls
 app.post('/urls', (req, res) => {
-  const randomString = generateRandomString();
+  console.log('ANALYTICSDB:', analyticsDB);
+  const shortURL = generateRandomString();
   const currUser = req.session.user_id;
-  urlDatabase[randomString] = {
+  urlDatabase[shortURL] = {
     longURL: req.body.longURL,
     userID: currUser
   };
-  res.redirect(`/urls/${randomString}`);
+  addURLToAnalytics(shortURL, analyticsDB);
+  console.log(analyticsDB);
+  res.redirect(`/urls/${shortURL}`);
 });
 
 // Adds new user to users db
