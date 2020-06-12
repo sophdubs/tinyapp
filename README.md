@@ -3,14 +3,19 @@
 TinyApp is a full stack web application built with Node and Express that allows users to shorten long URLs (à la bit.ly).
 
 ## Final Product
-This is the URLs page a logged in user might see. Only the urls create by the current logged in user are visible.
-!["Screenshot of URLs page"]
 
-This is the register form a user might see. It is very similar to the login page.
-!["Screenshot of Register form"]
+This is the main URLs page a logged in user might see. Only the urls created by the current logged in user are visible. User can see the shortURL, longURL, date created, number of visits, number of unique visitors and can click to edit or delete the url.
+!["Screenshot of URLs page"](https://github.com/sophdubs/tinyapp/blob/master/docs/urls-page.png?raw=true)
 
-This is the form a user will see when creating a new tiny URL.
-!["Screenshot of new URL form"]
+This is the page a user will see when editing an existing tiny URL. The page displays the longURL, shortURL, date created, number of visits, number of unique visitors and a link to a detailed analytics page. It also has a form to edit the longURL associated with the tinyURL.
+!["Screenshot of new URL form"](https://github.com/sophdubs/tinyapp/blob/master/docs/edit-page.png?raw=true)
+
+This is the detailed analytics page. It shows the tinyURL creator the username and date for everytime the tinyURL was used. 
+!["Screenshot of Login form"](https://github.com/sophdubs/tinyapp/blob/master/docs/analytics-page.png?raw=true)
+
+This is the login form a user might see when they visit the login page. It is very similar to the register page.
+!["Screenshot of Login form"](https://github.com/sophdubs/tinyapp/blob/master/docs/login-page.png?raw=true)
+
 
 ## Dependencies
 
