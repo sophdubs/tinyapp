@@ -118,7 +118,7 @@ app.get('/urls/:shortURL/analytics', (req, res) => {
   const processedVisitors = processVisitors(analyticsDB[shortURL].visitors);
   const sortedVisitorArray = sortProcessedVisitors(processedVisitors);
   const templateVars = {
-    shortURL, 
+    shortURL,
     user: userID,
     visitors: sortedVisitorArray
   };

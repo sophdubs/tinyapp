@@ -129,30 +129,33 @@ describe('#processVisitors', function() {
     'user1': ['visit 1', 'visit2'],
     'user2': ['visita', 'visitb', 'visitc']
   };
-  const expectedValue = [ 
-  [ 'user1', 'visit 1' ],
-  [ 'user1', 'visit2' ],
-  [ 'user2', 'visita' ],
-  [ 'user2', 'visitb' ],
-  [ 'user2', 'visitc' ] ]; 
+  const expectedValue = [
+    [ 'user1', 'visit 1' ],
+    [ 'user1', 'visit2' ],
+    [ 'user2', 'visita' ],
+    [ 'user2', 'visitb' ],
+    [ 'user2', 'visitc' ]
+  ];
   it('should destructure the visitors object into an array of arrays', function() {
     expect(processVisitors(visitorObj)).to.deep.equal(expectedValue);
   });
 });
 
 describe('#sortProcessedVisitors', function() {
-  const processedVisitors = [ 
-  [ 'user1', 10 ],
-  [ 'user1', 4 ],
-  [ 'user2', 13 ],
-  [ 'user2', 1 ],
-  [ 'user2', 5 ] ]; 
-  const expectedValue = [ 
+  const processedVisitors = [
+    [ 'user1', 10 ],
+    [ 'user1', 4 ],
+    [ 'user2', 13 ],
+    [ 'user2', 1 ],
+    [ 'user2', 5 ]
+  ];
+  const expectedValue = [
     [ 'user2', 13 ],
     [ 'user1', 10 ],
     [ 'user2', 5 ],
     [ 'user1', 4 ],
-    [ 'user2', 1 ] ]; 
+    [ 'user2', 1 ]
+  ];
   it('should sort the processed user array in decreasing order (most recent to least recent date in ms)', function() {
     expect(sortProcessedVisitors(processedVisitors)).to.deep.equal(expectedValue);
   });

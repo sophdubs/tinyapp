@@ -51,18 +51,18 @@ const addURLToAnalytics = (shortURL, db) => {
 const updateURLAnalytics = (shortURL, userID, db) => {
   // increate count of visits by one
   db[shortURL].visits += 1;
-  // if user has never visited this link, 
+  // if user has never visited this link
   if (db[shortURL].visitors[userID]) {
     // if user has visited before, add current date to array
     db[shortURL].visitors[userID].push(Date.now());
   } else {
     // add user_id as key and array with current date as value in the visitors object
     db[shortURL].visitors[userID] = [Date.now()];
-  } 
-}
+  }
+};
 
 const processVisitors = (visitors) => {
-  visitorArray = [];
+  const visitorArray = [];
   for (const [visitor, dates] of Object.entries(visitors)) {
     for (const date of dates) {
       let subArr = [visitor];
@@ -77,7 +77,7 @@ const sortProcessedVisitors = visitorArr => {
   return visitorArr.sort((a, b) => {
     return b[1] - a[1];
   });
-}
+};
 
 
 module.exports = { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics, processVisitors, sortProcessedVisitors };
