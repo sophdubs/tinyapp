@@ -115,7 +115,6 @@ app.get('/u/:shortURL', (req, res) => {
   }
   // If it exists, update the analytics before redirecting the user
   updateURLAnalytics(shortURL, userID, analyticsDB);
-  console.log(analyticsDB);
   res.redirect(urlDatabase[shortURL].longURL);
 });
 
@@ -148,7 +147,6 @@ app.get('/login', (req, res) => {
 
 // Creating a new shortURL/longURL entry in the database and redirect to /urls
 app.post('/urls', (req, res) => {
-  console.log('ANALYTICSDB:', analyticsDB);
   const shortURL = generateRandomString();
   const currUser = req.session.user_id;
   urlDatabase[shortURL] = {
@@ -156,7 +154,6 @@ app.post('/urls', (req, res) => {
     userID: currUser
   };
   addURLToAnalytics(shortURL, analyticsDB);
-  console.log(analyticsDB);
   res.redirect(`/urls/${shortURL}`);
 });
 
@@ -191,6 +188,7 @@ app.delete('/urls/:shortURL', (req, res) => {
     return;
   }
   delete urlDatabase[req.params.shortURL];
+  delete analyticsDB[req.params.shortURL];
   res.redirect('/urls');
 });
 

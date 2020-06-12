@@ -1,6 +1,5 @@
 const analyticsDB = {};
 
-
 /*
 An entry will look like this:
 'shortURL': {
