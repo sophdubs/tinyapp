@@ -25,7 +25,7 @@
     <main style="margin: 1em;" class="text-center">
       <h3>Detailed Analytics</h3>
       <h4>TinyURL: <%=shortURL%> </h4>
-      <table class="table">
+      <table class="table mx-auto" style="width: 70%; border: 1px solid lightgrey">
         <thead>
           <tr>
             <th scope="col">Username</th>
@@ -33,22 +33,18 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <% for(const url in urls) { %>
+          <% for(const visitor of visitors) { %>
             <tr>
-              <td><%= url %></td>
-              <td><%= urls[url].longURL %></td>
-              <td><%= analytics[url].dateCreated %></td>
-              <td><%= analytics[url].visits %></td>
-              <td><%= Object.keys(analytics[url].visitors).length %></td>
-              <td><button class="btn btn-outline-primary"><a href="/urls/<%=url%>">Edit</a></button></td>
-              <form method="POST" action="/urls/<%=url%>?_method=DELETE">
-                <td><button class="btn btn-outline-danger">Delete</button></td>
-              </form>
+              <% if (visitor[0] === user)  { %>
+              <td><%=visitor[0]%>(me)</td>
+              <% } else { %>
+              <td><%=visitor[0]%></td>
+              <% } %>
+              <td><%= new Date(visitor[1]).toLocaleString() %></td>
             </tr>
-          <% } %> -->
+          <% } %>
         </tbody>
       </table>
-      <a href="/urls/new" class="text-success mx-3">+ create new URL</a>
     </main>
   <% } %>
 

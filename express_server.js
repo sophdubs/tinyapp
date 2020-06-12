@@ -11,7 +11,7 @@ const { analyticsDB } = require('./models/analytics_data');
 // Importing custom middleware
 const { ensureCredentialsPresent } = require('./helpers/middleware');
 // Importing helper functions
-const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics } = require('./helpers/helpers');
+const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics, processVisitors, sortProcessedVisitors } = require('./helpers/helpers');
 // declaring variables
 const PORT = 8080;
 const SALT = 10;
@@ -115,10 +115,12 @@ app.get('/urls/:shortURL/analytics', (req, res) => {
     return;
   }
   // I want to sort the visitors first before passing them through template vars
+  const processedVisitors = processVisitors(analyticsDB[shortURL].visitors);
+  const sortedVisitorArray = sortProcessedVisitors(processedVisitors);
   const templateVars = {
     shortURL, 
     user: userID,
-    analytics: analyticsDB[shortURL].visitors
+    visitors: sortedVisitorArray
   };
   res.render('analytics_page', templateVars);
 });
