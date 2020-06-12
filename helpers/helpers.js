@@ -70,9 +70,14 @@ const processVisitors = (visitors) => {
       visitorArray.push(subArr);
     }
   }
-
   return visitorArray;
 };
 
+const sortProcessedVisitors = visitorArr => {
+  return visitorArr.sort((a, b) => {
+    return b[1] - a[1];
+  });
+}
 
-module.exports = { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics, processVisitors };
+
+module.exports = { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics, processVisitors, sortProcessedVisitors };

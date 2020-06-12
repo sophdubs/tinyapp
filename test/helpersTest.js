@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics, processVisitors } = require('../helpers/helpers');
+const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics, processVisitors, sortProcessedVisitors } = require('../helpers/helpers');
 
 const testUsers = {
   "userRandomID": {
@@ -139,4 +139,24 @@ describe('#processVisitors', function() {
     expect(processVisitors(visitorObj)).to.deep.equal(expectedValue);
   });
 });
+
+describe('#sortProcessedVisitors', function() {
+  const processedVisitors = [ 
+  [ 'user1', 10 ],
+  [ 'user1', 4 ],
+  [ 'user2', 13 ],
+  [ 'user2', 1 ],
+  [ 'user2', 5 ] ]; 
+  const expectedValue = [ 
+    [ 'user2', 13 ],
+    [ 'user1', 10 ],
+    [ 'user2', 5 ],
+    [ 'user1', 4 ],
+    [ 'user2', 1 ] ]; 
+  it('should sort the processed user array in decreasing order (most recent to least recent date in ms)', function() {
+    expect(sortProcessedVisitors(processedVisitors)).to.deep.equal(expectedValue);
+  });
+});
+
+
 
