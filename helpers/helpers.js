@@ -48,5 +48,18 @@ const addURLToAnalytics = (shortURL, db) => {
   db[shortURL] = urlObj;
 };
 
+const updateURLAnalytics = (shortURL, userID, db) => {
+  // increate count of visits by one
+  db[shortURL].visits += 1;
+  // if user has never visited this link, 
+  if (db[shortURL].visitors[userID]) {
+    // if user has visited before, add current date to array
+    db[shortURL].visitors[userID].push(new Date(Date.now()).toLocaleString());
+  } else {
+    // add user_id as key and array with current date as value in the visitors object
+    db[shortURL].visitors[userID] = [new Date(Date.now()).toLocaleString()];
+  } 
+}
 
-module.exports = { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics };
+
+module.exports = { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics };

@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics } = require('../helpers/helpers');
+const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics } = require('../helpers/helpers');
 
 const testUsers = {
   "userRandomID": {
@@ -97,4 +97,30 @@ describe('#addURLToAnalytics', function() {
   it('should generate an object containing the tinyURLs analytics as the value', function() {
     expect(testAnalyticsDB['hello']).to.deep.equal(testEntry);
   });
+});
+
+describe('#updateURLAnalytics', function() {
+  const testAnalyticsDB = {
+    'hello': {
+      dateCreated: '6/12/2020, 7:45:43 PM',
+      visits: 0,
+      visitors: {}
+    }
+  };
+  let testDate = new Date(Date.now()).toLocaleString();
+  updateURLAnalytics('hello', 'user1', testAnalyticsDB);
+  it('should increase the number of visits by one', function() {
+    expect(testAnalyticsDB.hello.visits).to.equal(1);
+  });
+  it('should add a visitor to the visitors object', function() {
+    expect(Object.keys(testAnalyticsDB.hello.visitors)[0]).to.equal('user1');
+  });
+  it('the new visitor should map to an array with a single date as value', function() {
+    expect(testAnalyticsDB.hello.visitors['user1']).to.deep.equal([testDate]);
+  });
+  it('should add another date to the array of dates if the visitor has visited this link before', function() {
+    updateURLAnalytics('hello', 'user1', testAnalyticsDB);
+    expect(testAnalyticsDB.hello.visitors['user1'].length).to.equal(2);
+  });
+  
 });
