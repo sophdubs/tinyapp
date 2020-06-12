@@ -40,7 +40,7 @@ const urlsForUser = (userID, db) => {
 };
 
 const addURLToAnalytics = (shortURL, db) => {
-  let urlObj = {
+  const urlObj = {
     dateCreated: new Date(Date.now()).toLocaleString().split(',')[0],
     visits: 0,
     visitors: {}
@@ -65,7 +65,7 @@ const processVisitors = (visitors) => {
   const visitorArray = [];
   for (const [visitor, dates] of Object.entries(visitors)) {
     for (const date of dates) {
-      let subArr = [visitor];
+      const subArr = [visitor];
       subArr.push(date);
       visitorArray.push(subArr);
     }

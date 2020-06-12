@@ -107,7 +107,7 @@ describe('#updateURLAnalytics', function() {
       visitors: {}
     }
   };
-  let testDate = Date.now();
+  const testDate = Date.now();
   updateURLAnalytics('hello', 'user1', testAnalyticsDB);
   it('should increase the number of visits by one', function() {
     expect(testAnalyticsDB.hello.visits).to.equal(1);
