@@ -11,7 +11,7 @@ const { analyticsDB } = require('./models/analytics_data');
 // Importing custom middleware
 const { ensureCredentialsPresent } = require('./helpers/middleware');
 // Importing helper functions
-const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics } = require('./helpers/helpers');
+const { addUserToDB, generateRandomString, userExists, findUserByEmail, urlsForUser, addURLToAnalytics, updateURLAnalytics } = require('./helpers/helpers');
 // declaring variables
 const PORT = 8080;
 const SALT = 10;
@@ -100,6 +100,10 @@ app.get('/urls/:shortURL', (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+app.get('/analytics', (req, res) => {
+  res.json(analyticsDB);
+});
+
 // Redirects the user to the longURL associated to the given shortURL
 app.get('/u/:shortURL', (req, res) => {
   const userID = req.session.user_id;
@@ -109,6 +113,9 @@ app.get('/u/:shortURL', (req, res) => {
     res.status(400).render('no_record', {shortURL, user: users[userID]});
     return;
   }
+  // If it exists, update the analytics before redirecting the user
+  updateURLAnalytics(shortURL, userID, analyticsDB);
+  console.log(analyticsDB);
   res.redirect(urlDatabase[shortURL].longURL);
 });
 
