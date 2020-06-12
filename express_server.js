@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const cookieSession = require('cookie-session');
+const methodOverride = require('method-override');
 // Importing databases
 const { users } = require('./models/user_data');
 const { urlDatabase } = require('./models/url_data');
@@ -28,6 +29,7 @@ app.use(cookieSession({
   name: 'session',
   keys: ['f080ac7b-b838-4c5f-a1f4-b0a9fee10130', 'c3fb18be-448b-4f6e-a377-49373e9b7e1a']
 }));
+app.use(methodOverride('_method'));
 
 
 // GET ROUTES:
@@ -171,7 +173,7 @@ app.post('/register', ensureCredentialsPresent, (req, res) => {
 });
 
 // Deletes short url from db
-app.post('/urls/:shortURL/delete', (req, res) => {
+app.delete('/urls/:shortURL', (req, res) => {
   const currUser = req.session.user_id;
   if (currUser !== urlDatabase[req.params.shortURL].userID) {
     res.status(400).send('Error: cannot delete another creator\'s URL \n');
