@@ -13,7 +13,7 @@
         <div class="card-body">
           <h3>Oops!</h3>
           <p>This content is reserved for registered users.</p>
-          <p>Please <a href="/login">login</a> or <a href="/register">register </a> to proceed.</p>
+          <p>Please <a href="/login" class="text-success">login</a> or <a href="/register" class="text-success">register </a> to proceed.</p>
         </div>
       </div>
     </main>
@@ -23,7 +23,7 @@
         <div class="card-body">
           <h3>Oops!</h3>
           <p>This content is reserved for the creator of this URL</p>
-          <p>Please create your own URL <a href="/urls/new">here</a></p>
+          <p>Please create your own URL <a href="/urls/new" class="text-success">here</a></p>
         </div>
       </div>
     </main>
@@ -45,7 +45,7 @@
           <form method="POST" action="/urls/<%=shortURL%>?_method=PUT" class=" justify-content-center" role="form">
             <label class="mx-2">New Long URL: </label>
             <input name="new_long_URL" class="form-control w-75 mx-auto" placeholder="https://"/>
-            <button type="submit" class="btn btn-success mx-2 mt-3">Submit</button>
+            <button type="submit" class="btn btn-success mx-2 mt-3">Update</button>
           </form>
         </div>
       </div>
