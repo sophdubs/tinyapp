@@ -116,7 +116,7 @@ describe('#updateURLAnalytics', function() {
     expect(Object.keys(testAnalyticsDB.hello.visitors)[0]).to.equal('user1');
   });
   it('the new visitor should map to an array with a single date as value', function() {
-    expect(testAnalyticsDB.hello.visitors['user1']).to.deep.equal([testDate]);
+    expect(testAnalyticsDB.hello.visitors['user1'][0]).to.be.oneOf([testDate, testDate + 1]);
   });
   it('should add another date to the array of dates if the visitor has visited this link before', function() {
     updateURLAnalytics('hello', 'user1', testAnalyticsDB);

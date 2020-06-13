@@ -66,13 +66,11 @@ app.get('/urls', (req, res) => {
 app.get('/urls/new', (req, res) => {
   // extracting cookie and passing it in through templateVars for dynamic template depending on logged in state
   const userID = req.session.user_id;
-
   // If user is not logged in, they cannot create new urls are are redirected to login page
   if (!userID) {
     res.redirect('/login');
     return;
   }
-
   const user = users[userID];
   const templateVars = {
     user
@@ -102,10 +100,7 @@ app.get('/urls/:shortURL', (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-app.get('/analytics', (req, res) => {
-  res.json(analyticsDB);
-});
-
+// Renders detailed analytics for specified shortURL
 app.get('/urls/:shortURL/analytics', (req, res) => {
   const userID = req.session.user_id;
   const shortURL = req.params.shortURL;

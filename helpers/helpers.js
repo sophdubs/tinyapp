@@ -49,7 +49,7 @@ const addURLToAnalytics = (shortURL, db) => {
 };
 
 const updateURLAnalytics = (shortURL, userID, db) => {
-  // increate count of visits by one
+  // increase count of visits by one
   db[shortURL].visits += 1;
   // if user has never visited this link
   if (db[shortURL].visitors[userID]) {
@@ -61,6 +61,7 @@ const updateURLAnalytics = (shortURL, userID, db) => {
   }
 };
 
+// flatten the visitors object to be an array of subarrays containing the visitor id and timestamp for each visit.
 const processVisitors = (visitors) => {
   const visitorArray = [];
   for (const [visitor, dates] of Object.entries(visitors)) {
@@ -73,6 +74,7 @@ const processVisitors = (visitors) => {
   return visitorArray;
 };
 
+// Sort the array of visitors in order of most recent visit to least recent visit
 const sortProcessedVisitors = visitorArr => {
   return visitorArr.sort((a, b) => {
     return b[1] - a[1];
